@@ -1,0 +1,17 @@
+.git
+build.sh
+makefile
+dist/
+bower_components/
+node_modules/
+.idea/
+
+*.fla
+*.iml
+**/*.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+src/*
+!src/app
+!src/index.html
