@@ -33,7 +33,6 @@
 }
 #homepage-banner {
   width: 100%;
-  background-image: url("../img/banner/header_banner_resize.png");
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -55,6 +54,7 @@
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+  background-color: #036;
 }
 #homepage-banner .column-24 {
   display: -webkit-box;
@@ -83,5 +83,5 @@
   margin-bottom: auto;
 }
 .sub-nav {
-  background-color: #9bc19c;
+  background-color: #009ada;
 }

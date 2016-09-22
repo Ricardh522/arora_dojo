@@ -12,6 +12,13 @@ module.exports = function(grunt) {
         src: [
           'dist/**/*.uncompressed.js'
         ]
+      },
+      django: {
+        options: {
+          force: true
+        },
+        src: ['../arora/arora/home/static/home/app/', '../arora/arora/home/static/home/dojo/',
+        '../arora/tests/unit/']
       }
     },
 
@@ -20,12 +27,25 @@ module.exports = function(grunt) {
             files: [{
                 expand: true,
                 cwd: 'src/',
-                src: ['index.html'],
+                src: ['built.html'],
                 dest: './dist/',
                 rename: function (dest, src) {
                     return dest + 'index.html';
                 }
             }]
+        },
+        django: {
+          files: [{
+            expand: true,
+            cwd: 'dist/',
+            src: ['app/img/**', 'app/resources/**', 'dojo/resources/**', 'dojo/dojo.js'],
+            dest: '../arora/arora/home/static/home/'
+          }, {
+            expand: true,
+            cwd: 'tests',
+            src: ['unit/**'],
+            dest: '../arora/tests/'
+          }]
         }
     },
     dojo: {
@@ -54,8 +74,8 @@ module.exports = function(grunt) {
     },
     watch: {
       main: {
-        files: ['**/*.js', '**/*.html',
-      '**/*.styl'],
+        files: ['src/app/**/*.js', 'src/**/*.html',
+      'src/app/**/*.styl'],
         tasks: ['stylus:compile', 'jshint']
       }
     },
@@ -105,7 +125,7 @@ module.exports = function(grunt) {
       },
         test: {
             options: {
-                base: '.',
+              base: '.',
               open: {
                 target: 'http://localhost:3000/node_modules/intern/client.html?config=tests/intern'
               }
@@ -114,9 +134,10 @@ module.exports = function(grunt) {
         dist: {
             options: {
                 base: './dist',
-              open: {
-                target: 'http://localhost:3000/index.html'
-              }
+                open: {
+                  target: 'http://localhost:3000/index.html'
+                },
+                keepalive: true
             }
         }
     },
@@ -137,22 +158,8 @@ module.exports = function(grunt) {
 		}
   });
 
-  grunt.registerTask('serve', function (target) {
-		if (target === 'dist') {
-			return grunt.task.run([
-				'build',
-				'connect:dist:keepalive'
-			]);
-		}
-
-		grunt.task.run([
-			'stylus:compile',
-			'connect:test',
-			'watch'
-		]);
-	});
-
-  grunt.registerTask('build', ['stylus:compile', 'jshint', 'clean:build', 'dojo', 'copy', 'clean:uncompressed', 'connect:dist']);
+  grunt.registerTask('build', ['stylus:compile', 'jshint', 'clean:build', 'dojo', 'copy:main', 'clean:uncompressed',
+    'clean:django', 'copy:django', 'connect:dist']);
   grunt.registerTask('default', ['stylus:compile', 'jshint', 'connect:dev', 'watch']);
   grunt.registerTask('test', ['stylus:compile', 'jshint', 'connect:test', 'watch']);
 };

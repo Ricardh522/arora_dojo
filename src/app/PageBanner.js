@@ -1,6 +1,7 @@
 define([
   "dojo/_base/declare",
   "dojo/_base/lang",
+  "dojo/query",
   "dojo/dom-construct",
   "dojo/dom-style",
   "dojo/_base/array",
@@ -11,6 +12,7 @@ define([
 ], function(
   declare,
   lang,
+  query,
   domConstruct,
   domStyle,
   Array,
@@ -40,6 +42,10 @@ define([
         var string = "<a class='sub-nav-link' href="+e.href+">"+e.title+"</a>";
         domConstruct.place(string, targetNode, 'last');
       });
+      this._setTitleAttr = function(value) {
+        node = query("h1", this.id)[0];
+        node.innerHTML = value;
+      };
     }
   });
 });
